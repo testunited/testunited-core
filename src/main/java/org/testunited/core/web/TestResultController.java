@@ -55,16 +55,23 @@ public class TestResultController {
 	@ResponseStatus(HttpStatus.CREATED)
 	public TestResult save(@Valid @RequestBody TestResult testResult) {
 
-		//System.out.println(testResult.toString());
-		TestCase testCase = testCaseService.getByTestSourceId(testResult.getTestSourceId());
-		if (testCase == null) {
-			testCase = new TestCase(testResult.getTestSourceId(), testResult.getTestSourceId(), null);
-			this.testCaseService.save(testCase);
+		if (logger.isInfoEnabled()) {
+			ObjectMapper mapper = new ObjectMapper();
+			mapper.enable(SerializationFeature.INDENT_OUTPUT);
+			mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+			// StdDateFormat is ISO8601 since jackson 2.9
+			mapper.setDateFormat(new StdDateFormat().withColonInTimeZone(true));
+			try {
+				String results = mapper.writeValueAsString(testResult);
+				logger.info(results);
+			} catch (JsonProcessingException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
-
-		TestRun testRun = new TestRun(testCase, testResult.getTimeStamp(), testResult.getResult(),
-				testResult.getReason(), null);
-		this.testRunService.save(testRun);
+		
+		this.saveTestResult(testResult);
+		
 		return testResult;
 	}
 
@@ -87,10 +94,21 @@ public class TestResultController {
 			}
 		}
 
-		// for(TestResult testResult: testResults)
-		// this.testRunService.save(testResult);
 		for (TestResult r : testResults)
-			this.save(r);
+			this.saveTestResult(r);
+		
 		return testResults;
+	}
+	
+	private void saveTestResult(TestResult testResult) {
+		TestCase testCase = testCaseService.getByTestSourceId(testResult.getTestSourceId());
+		if (testCase == null) {
+			testCase = new TestCase(testResult.getTestSourceId(), testResult.getTestSourceId(), null);
+			this.testCaseService.save(testCase);
+		}
+
+		TestRun testRun = new TestRun(testCase, testResult.getTimeStamp(), testResult.getResult(),
+				testResult.getReason(), null);
+		this.testRunService.save(testRun);
 	}
 }

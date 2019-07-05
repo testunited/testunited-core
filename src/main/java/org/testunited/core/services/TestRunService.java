@@ -18,6 +18,10 @@ public class TestRunService {
 		this.testRunRepo.save(testGroup);
 	}
 	
+	public void save(List<TestRun> testRuns) {
+		this.testRunRepo.saveAll(testRuns);
+	}
+	
 	public List<TestRun> getByTestCaseId(UUID testCaseId) {
 		return testRunRepo.findByTestCaseId(testCaseId);
 	}

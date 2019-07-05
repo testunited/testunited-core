@@ -18,5 +18,10 @@ pipeline {
                 sh "docker push learnright-int:5000/testunited/testunited-core"
             }
         }
+        stage('Deploy') { 
+            steps {
+                sh "kubectl apply -f src/main/infra/int/testunited-core-deployment.yml"
+            }
+        }
     }
 }

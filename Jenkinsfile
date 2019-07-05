@@ -20,7 +20,7 @@ pipeline {
         }
         stage('Deploy') { 
             steps {
-                sh "kubectl apply -f src/main/infra/int/testunited-core-deployment.yml"
+                sh "kubectl set image deployment/testunited-core-deployment testunited-container=learnright-int:5000/testunited/testunited-core"
             }
         }
     }

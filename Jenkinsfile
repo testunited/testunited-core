@@ -14,8 +14,8 @@ pipeline {
         stage('Package') { 
             steps {
                 sh "gradle jar docker"
-                docker "tag testunited/testunited-core learnright-int:5000/testunited/testunited-core"
-                docker "push learnright-int:5000/testunited/testunited-core"
+                sh "docker tag testunited/testunited-core learnright-int:5000/testunited/testunited-core"
+                sh "docker push learnright-int:5000/testunited/testunited-core"
             }
         }
     }

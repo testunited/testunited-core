@@ -69,7 +69,6 @@ jacocoTestReport {
 }
 docker {
     name "testunited/${bootJar.baseName}:latest"
-    println("Doker Image: testunited/${bootJar.baseName}")
     files jar.archivePath
     copySpec.from("build/libs").into(".")
     buildArgs(['JAR_FILE': "${bootJar.baseName}-${bootJar.version}.jar"])

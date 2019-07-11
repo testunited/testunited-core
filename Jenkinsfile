@@ -17,13 +17,13 @@ pipeline {
         stage('Package') { 
             steps {
                 sh "gradle jar docker"
-                sh "docker tag testunited/testunited-core learnright-int:5000/testunited/testunited-core:${BUILD_NUMBER}"
-                sh "docker push learnright-int:5000/testunited/testunited-core:${BUILD_NUMBER}"
+                sh "docker tag testunited/testunited-core registry.minikube.local:80/testunited/testunited-core:${BUILD_NUMBER}"
+                sh "docker push registry.minikube.local:80/testunited/testunited-core:${BUILD_NUMBER}"
             }
         }
         stage('Deploy') { 
             steps {
-                sh "kubectl set image deployment/testunited-core-deployment testunited-container=learnright-int:5000/testunited/testunited-core:${BUILD_NUMBER}"
+                sh "kubectl set image deployment/testunited-core-deployment testunited-container=registry.minikube.local:80/testunited/testunited-core:${BUILD_NUMBER}"
             }
         }
     }

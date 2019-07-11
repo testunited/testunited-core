@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: testunited-container
-        image: localhost:5000/testunited/testunited-core:latest
+        image: registry.minikube.local:80/testunited/testunited-core:latest
         env:
         - name: spring.jpa.hibernate.ddl-auto
           value: "none"

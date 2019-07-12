@@ -1,26 +1,26 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: testunited-core-deployment
+  name: testunited-core
   labels:
-    app: testunited-core-app
+    app: testunited-core
 spec:
   selector:
     matchLabels:
-      app: testunited-core-app
+      app: testunited-core
   template:
     metadata:
       labels:
-        app: testunited-core-app
+        app: testunited-core
     spec:
       containers:
-      - name: testunited-container
+      - name: testunited-core
         image: registry.minikube.local:80/testunited/testunited-core:latest
         env:
         - name: spring.jpa.hibernate.ddl-auto
           value: "none"
         - name: spring.datasource.url
-          value: "jdbc:mysql://testunited-mysql-service:3306/testunited"
+          value: "jdbc:mysql://testunited-mysql:3306/testunited"
         - name: spring.datasource.username
           value: "springuser"
         - name: spring.datasource.password

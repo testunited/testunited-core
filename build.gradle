@@ -78,10 +78,6 @@ test {
     useJUnitPlatform()
 }
 
-task kubeDeploy (group:"Kubernetes", description: "Deploys the docker image to the local kubernetes instance", type: Exec){
-	commandLine 'kubectl', 'apply', '-f', 'deployment.yml'
-}
-
 task runJar(group: "Run", description: "Runs the Jar built by the 'build' task", type: JavaExec) {
     dependsOn = [build, test]
     main = "-jar";

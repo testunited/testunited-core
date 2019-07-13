@@ -23,7 +23,7 @@ pipeline {
         }
         stage('Deploy') { 
             steps {
-                sh "kubectl set image deployment/testunited-core testunited-core=registry.minikube.local:80/testunited/testunited-core:${BUILD_NUMBER}"
+                sh "kubectl set image deployment/core core=registry.minikube.local:80/testunited/testunited-core:${BUILD_NUMBER} -n testunited"
             }
         }
     }

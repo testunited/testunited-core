@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.testunited.core.TestCase;
 import org.testunited.core.TestGroup;
 import org.testunited.core.TestResult;
+import org.testunited.core.TestResultSubmission;
 import org.testunited.core.TestRun;
 import org.testunited.core.TestTarget;
 import org.testunited.core.services.TestCaseService;
@@ -51,9 +52,58 @@ public class TestResultController {
 		return "hello";
 	}
 
-	@PostMapping("/testresults")
+//	@PostMapping("/testresults")
+//	@ResponseStatus(HttpStatus.CREATED)
+//	public TestResult save(@Valid @RequestBody TestResult testResult) {
+//
+//		if (logger.isInfoEnabled()) {
+//			ObjectMapper mapper = new ObjectMapper();
+//			mapper.enable(SerializationFeature.INDENT_OUTPUT);
+//			mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+//			// StdDateFormat is ISO8601 since jackson 2.9
+//			mapper.setDateFormat(new StdDateFormat().withColonInTimeZone(true));
+//			try {
+//				String results = mapper.writeValueAsString(testResult);
+//				logger.info(results);
+//			} catch (JsonProcessingException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
+//		}
+//		
+//		this.saveTestResult(testResult);
+//		
+//		return testResult;
+//	}
+//
+//	@PostMapping("/testresults/bulk")
+//	@ResponseStatus(HttpStatus.CREATED)
+//	public List<TestResult> save(@RequestBody List<TestResult> testResults) {
+//
+//		if (logger.isInfoEnabled()) {
+//			ObjectMapper mapper = new ObjectMapper();
+//			mapper.enable(SerializationFeature.INDENT_OUTPUT);
+//			mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+//			// StdDateFormat is ISO8601 since jackson 2.9
+//			mapper.setDateFormat(new StdDateFormat().withColonInTimeZone(true));
+//			try {
+//				String results = mapper.writeValueAsString(testResults);
+//				logger.info(results);
+//			} catch (JsonProcessingException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
+//		}
+//
+//		for (TestResult r : testResults)
+//			this.saveTestResult(r);
+//		
+//		return testResults;
+//	}
+	
+	@PostMapping("/testresultsubmissions")
 	@ResponseStatus(HttpStatus.CREATED)
-	public TestResult save(@Valid @RequestBody TestResult testResult) {
+	public TestResultSubmission save(@RequestBody TestResultSubmission submission) {
 
 		if (logger.isInfoEnabled()) {
 			ObjectMapper mapper = new ObjectMapper();
@@ -62,31 +112,7 @@ public class TestResultController {
 			// StdDateFormat is ISO8601 since jackson 2.9
 			mapper.setDateFormat(new StdDateFormat().withColonInTimeZone(true));
 			try {
-				String results = mapper.writeValueAsString(testResult);
-				logger.info(results);
-			} catch (JsonProcessingException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-		
-		this.saveTestResult(testResult);
-		
-		return testResult;
-	}
-
-	@PostMapping("/testresults/bulk")
-	@ResponseStatus(HttpStatus.CREATED)
-	public List<TestResult> save(@RequestBody List<TestResult> testResults) {
-
-		if (logger.isInfoEnabled()) {
-			ObjectMapper mapper = new ObjectMapper();
-			mapper.enable(SerializationFeature.INDENT_OUTPUT);
-			mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
-			// StdDateFormat is ISO8601 since jackson 2.9
-			mapper.setDateFormat(new StdDateFormat().withColonInTimeZone(true));
-			try {
-				String results = mapper.writeValueAsString(testResults);
+				String results = mapper.writeValueAsString(submission.getTestResults());
 				logger.info(results);
 			} catch (JsonProcessingException e) {
 				// TODO Auto-generated catch block
@@ -94,13 +120,13 @@ public class TestResultController {
 			}
 		}
 
-		for (TestResult r : testResults)
-			this.saveTestResult(r);
+		for (TestResult r : submission.getTestResults())
+			this.saveTestResult(r, submission.getSession());
 		
-		return testResults;
+		return submission;
 	}
 	
-	private void saveTestResult(TestResult testResult) {
+	private void saveTestResult(TestResult testResult, String session) {
 		TestCase testCase = testCaseService.getByTestSourceId(testResult.getTestSourceId());
 		if (testCase == null) {
 			testCase = new TestCase(testResult.getTestSourceId(), testResult.getTestSourceId(), null);
@@ -108,7 +134,7 @@ public class TestResultController {
 		}
 
 		TestRun testRun = new TestRun(testCase, testResult.getTimeStamp(), testResult.getResult(),
-				testResult.getReason(), null);
+				testResult.getReason(), session);
 		this.testRunService.save(testRun);
 	}
 }

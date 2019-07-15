@@ -18,32 +18,34 @@ public class TestRun {
 	private Date timeStamp;
 	private boolean result;
 	private String reason;
-	private String session;
+	
+	@ManyToOne
+	private TestSession testSession;
 
 	public TestRun() {
 	}
 
-	public TestRun(TestCase testCase, Date timeStamp, boolean result, String reason, String session) {
+	public TestRun(TestCase testCase, Date timeStamp, boolean result, String reason, TestSession testSession) {
 		super();
 		this.testCase = testCase;
 		this.timeStamp = timeStamp;
 		this.result = result;
 		this.reason = reason;
-		this.session = session;
+		this.testSession = testSession;
 	}
 
-	public TestRun(UUID id, TestCase testCase, Date timeStamp, boolean result, String reason, String session) {
+	public TestRun(UUID id, TestCase testCase, Date timeStamp, boolean result, String reason, TestSession testSession) {
 		super();
 		this.testCase = testCase;
 		this.timeStamp = timeStamp;
 		this.result = result;
 		this.id = id;
 		this.reason = reason;
-		this.session = session;
+		this.testSession = testSession;
 	}
 
-	public String getSession() {
-		return session;
+	public TestSession getTestSession() {
+		return testSession;
 	}
 
 	public TestCase getTestCase() {
@@ -62,8 +64,8 @@ public class TestRun {
 		this.result = result;
 	}
 
-	public void setSession(String session) {
-		this.session = session;
+	public void setTestSession(TestSession testSession) {
+		this.testSession = testSession;
 	}
 
 	public void setTestCase(TestCase testCase) {
@@ -86,7 +88,7 @@ public class TestRun {
 		this.reason = reason;
 	}
 
-	public void setUuid(UUID uuid) {
-		this.id = uuid;
+	public void setId(UUID id) {
+		this.id = id;
 	}
 }

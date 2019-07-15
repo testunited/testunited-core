@@ -25,8 +25,13 @@ public class TestRunService {
 	public List<TestRun> getByTestCaseId(UUID testCaseId) {
 		return testRunRepo.findByTestCaseId(testCaseId);
 	}
-	public List<TestRun> getByTestTargetIdAndSession(UUID testCaseId, String session) {
-		return testRunRepo.findByTestCaseIdAndSession(testCaseId, session);
+	
+	public List<TestRun> getByTestSessionId(UUID testSessionId) {
+		return testRunRepo.findByTestSessionId(testSessionId);
+	}	
+	
+	public List<TestRun> getByTestCaseIdAndTestSessionId(UUID testCaseId, UUID testSessionId) {
+		return testRunRepo.findByTestCaseIdAndTestSessionId(testCaseId, testSessionId);
 	}
 	public TestRun getById(UUID id) {
 		return this.testRunRepo.findById(id).get();

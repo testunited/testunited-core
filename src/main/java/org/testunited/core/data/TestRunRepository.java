@@ -9,6 +9,7 @@ import org.testunited.core.*;
 public interface TestRunRepository extends CrudRepository<TestRun, UUID> {
 
 	public List<TestRun> findByTestCaseId(UUID testCaseId);
-	public List<TestRun> findByTestCaseIdAndSession(UUID testCaseId, String session);
+	public List<TestRun> findByTestSessionId(UUID testSessionId);
+	public List<TestRun> findByTestCaseIdAndTestSessionId(UUID testCaseId, UUID testSessionId);
 
 }

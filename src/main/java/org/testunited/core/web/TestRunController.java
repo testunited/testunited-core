@@ -33,10 +33,15 @@ public class TestRunController {
 		return this.testRunService.getByTestCaseId(testCaseId);
 	}
 
-	@GetMapping("/testcases/{testCaseId}/testSessions/{testSession}/testruns")
-	public List<TestRun> getByTestCaseIdAndTestSession(@PathVariable UUID testCaseId,
-			@PathVariable String testSession){
-		return this.testRunService.getByTestTargetIdAndSession(testCaseId, testSession);
+	@GetMapping("/testcases/{testCaseId}/testSessions/{testSessionId}/testruns")
+	public List<TestRun> getByTestCaseIdAndTestSessionId(@PathVariable UUID testCaseId,
+			@PathVariable UUID testSessionId){
+		return this.testRunService.getByTestCaseIdAndTestSessionId(testCaseId, testSessionId);
+	}
+	
+	@GetMapping("/testSessions/{testSessionId}/testruns")
+	public List<TestRun> getByTestSessionId(@PathVariable UUID testSessionId){
+		return this.testRunService.getByTestSessionId(testSessionId);
 	}
 	
 	@GetMapping("/testruns/{id}")
@@ -63,7 +68,7 @@ public class TestRunController {
 	@ResponseStatus(HttpStatus.CREATED)
 	public TestRun save(@PathVariable UUID testCaseId,
 			@PathVariable String testSession, @PathVariable TestRun testRun) {
-		testRun.setSession(testSession);
+		//testRun.setSession(testSession);
 		testRun.setTestCase(new TestCase(testCaseId));
 		this.testRunService.save(testRun);
 		return testRun;

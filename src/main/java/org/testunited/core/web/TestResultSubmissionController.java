@@ -22,10 +22,12 @@ import org.testunited.core.TestGroup;
 import org.testunited.core.TestResult;
 import org.testunited.core.TestResultSubmission;
 import org.testunited.core.TestRun;
+import org.testunited.core.TestSession;
 import org.testunited.core.TestTarget;
 import org.testunited.core.services.TestCaseService;
 import org.testunited.core.services.TestGroupService;
 import org.testunited.core.services.TestRunService;
+import org.testunited.core.services.TestSessionService;
 import org.testunited.core.services.TestTargetService;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -34,16 +36,22 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.util.StdDateFormat;
 
 @RestController
-public class TestResultController {
+public class TestResultSubmissionController {
 
 	Logger logger = LoggerFactory.getLogger(getClass());
 
 	@Autowired
 	TestRunService testRunService;
+	
 	@Autowired
 	TestTargetService testTargetService;
+	
 	@Autowired
 	TestCaseService testCaseService;
+	
+	@Autowired
+	TestSessionService testSessionService;
+	
 	@Autowired
 	TestGroupService testGroupService;
 
@@ -133,8 +141,15 @@ public class TestResultController {
 			this.testCaseService.save(testCase);
 		}
 
+		TestSession testSession = this.testSessionService.getByName(session);
+		if(testSession == null) {
+			testSession = new TestSession(session);
+			this.testSessionService.save(testSession);
+		}
+		
 		TestRun testRun = new TestRun(testCase, testResult.getTimeStamp(), testResult.getResult(),
-				testResult.getReason(), session);
+				testResult.getReason(), testSession);
+
 		this.testRunService.save(testRun);
 	}
 }

@@ -57,28 +57,28 @@ public class TestRunController {
 		return this.testRunService.getAll();
 	}
 	
-//	@PostMapping("/testruns")
-//	@ResponseStatus(HttpStatus.CREATED)
-//	public TestRun save(@Valid @RequestBody TestRun testRun) {
-//		this.testRunService.save(testRun);
-//		return testRun;
-//	}
-//	
-//	@PostMapping("/testcases/{testCaseId}/testsessions/{testSessionId}/testruns")
-//	@ResponseStatus(HttpStatus.CREATED)
-//	public TestRun save(@PathVariable UUID testCaseId,
-//			@PathVariable String testSession, @PathVariable TestRun testRun) {
-//		//testRun.setSession(testSession);
-//		testRun.setTestCase(new TestCase(testCaseId));
-//		this.testRunService.save(testRun);
-//		return testRun;
-//	}
-//	
-//	@PostMapping("/testruns/bulk")
-//	@ResponseStatus(HttpStatus.CREATED)
-//	public List<TestRun> save(@RequestBody List<TestRun> testRuns) {
-//		for(TestRun testRun: testRuns)
-//			this.testRunService.save(testRun);
-//		return testRuns;
-//	}
+	@PostMapping("/testruns")
+	@ResponseStatus(HttpStatus.CREATED)
+	public TestRun save(@Valid @RequestBody TestRun testRun) {
+		this.testRunService.save(testRun);
+		return testRun;
+	}
+	
+	@PostMapping("/testcases/{testCaseId}/testsessions/{testSessionId}/testruns")
+	@ResponseStatus(HttpStatus.CREATED)
+	public TestRun save(@PathVariable UUID testCaseId,
+			@PathVariable String testSession, @PathVariable TestRun testRun) {
+		//testRun.setSession(testSession);
+		testRun.setTestCase(new TestCase(testCaseId));
+		this.testRunService.save(testRun);
+		return testRun;
+	}
+	
+	@PostMapping("/testruns/bulk")
+	@ResponseStatus(HttpStatus.CREATED)
+	public List<TestRun> save(@RequestBody List<TestRun> testRuns) {
+		for(TestRun testRun: testRuns)
+			this.testRunService.save(testRun);
+		return testRuns;
+	}
 }

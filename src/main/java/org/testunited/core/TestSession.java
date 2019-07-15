@@ -40,6 +40,10 @@ public class TestSession {
 	public boolean getResult() {
 		return this.result;
 	}
+	
+	public void setResult(boolean result) {
+		this.result = result;
+	} 
 	public TestSession(String name) {
 		super();
 		this.name = name;

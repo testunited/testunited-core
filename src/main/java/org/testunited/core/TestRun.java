@@ -56,7 +56,7 @@ public class TestRun {
 		return timeStamp;
 	}
 
-	public boolean isResult() {
+	public boolean getResult() {
 		return result;
 	}
 

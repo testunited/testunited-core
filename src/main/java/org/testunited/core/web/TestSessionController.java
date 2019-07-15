@@ -76,7 +76,7 @@ public class TestSessionController {
 		return new ResponseEntity<Boolean>(session.getResult(), HttpStatus.OK);	
 	}
 	
-	@GetMapping("/result?name={name}")
+	@GetMapping("/by_name/result?name={name}")
 	public ResponseEntity<Boolean> getResultByName(@PathVariable String name){
 		
 		var session = this.testSessionService.getByName(name);

@@ -16,7 +16,8 @@ public class TestSessionService {
 
 	@Autowired
 	private TestSessionRepository testSessionRepo;
-	
+	@Autowired
+	TestRunService testRunService;
 	public void save(TestSession testSession) {
 		this.testSessionRepo.save(testSession);
 	}
@@ -33,4 +34,15 @@ public class TestSessionService {
 		return (List<TestSession>)this.testSessionRepo.findAll();
 	}
 	
+	public boolean getOverallResult(UUID id) {
+		var testRuns = this.testRunService.getByTestSessionId(id);
+		
+		for(var testRun: testRuns) {
+			if(!testRun.getResult()) {
+				return false;
+			}
+		}
+		
+		return true;
+	}
 }

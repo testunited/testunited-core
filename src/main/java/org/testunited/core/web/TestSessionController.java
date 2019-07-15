@@ -30,8 +30,7 @@ public class TestSessionController {
 	@Autowired
 	TestSessionService testSessionService;
 
-	@Autowired
-	TestRunService testRunService;
+
 	
 	@GetMapping
 	public List<TestSession> getAll(){
@@ -44,14 +43,7 @@ public class TestSessionController {
 		if (session == null)
 			return new ResponseEntity<TestSession>(HttpStatus.NOT_FOUND);
 		
-		var testRuns = this.testRunService.getByTestSessionId(session.getId());
-		
-		for(var testRun: testRuns) {
-			if(testRun.getResult()) {
-				session.setResult(testRun.getResult());
-				break;
-			}
-		}
+		session.setResult(this.testSessionService.getOverallResult(id));
 		
 		return new ResponseEntity<TestSession>(session, HttpStatus.OK);
 	}
@@ -63,14 +55,7 @@ public class TestSessionController {
 		if (session == null)
 			return new ResponseEntity<Boolean>(HttpStatus.NOT_FOUND);
 		
-		var testRuns = this.testRunService.getByTestSessionId(session.getId());
-		
-		for(var testRun: testRuns) {
-			if(testRun.getResult()) {
-				session.setResult(testRun.getResult());
-				break;
-			}
-		}
+		session.setResult(this.testSessionService.getOverallResult(id));
 		
 		return new ResponseEntity<Boolean>(session.getResult(), HttpStatus.OK);	
 	}
@@ -82,14 +67,7 @@ public class TestSessionController {
 		if (session == null)
 			return new ResponseEntity<Boolean>(HttpStatus.NOT_FOUND);
 		
-		var testRuns = this.testRunService.getByTestSessionId(session.getId());
-		
-		for(var testRun: testRuns) {
-			if(testRun.getResult()) {
-				session.setResult(testRun.getResult());
-				break;
-			}
-		}
+		session.setResult(this.testSessionService.getOverallResult(session.getId()));
 		
 		return new ResponseEntity<Boolean>(session.getResult(), HttpStatus.OK);	
 	}

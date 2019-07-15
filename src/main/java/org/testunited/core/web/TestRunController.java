@@ -33,13 +33,13 @@ public class TestRunController {
 		return this.testRunService.getByTestCaseId(testCaseId);
 	}
 
-	@GetMapping("/testcases/{testCaseId}/testSessions/{testSessionId}/testruns")
+	@GetMapping("/testcases/{testCaseId}/testsessions/{testSessionId}/testruns")
 	public List<TestRun> getByTestCaseIdAndTestSessionId(@PathVariable UUID testCaseId,
 			@PathVariable UUID testSessionId){
 		return this.testRunService.getByTestCaseIdAndTestSessionId(testCaseId, testSessionId);
 	}
 	
-	@GetMapping("/testSessions/{testSessionId}/testruns")
+	@GetMapping("/testsessions/{testSessionId}/testruns")
 	public List<TestRun> getByTestSessionId(@PathVariable UUID testSessionId){
 		return this.testRunService.getByTestSessionId(testSessionId);
 	}

@@ -25,7 +25,6 @@ import org.testunited.core.services.TestSessionService;
 import org.testunited.core.services.TestTargetService;
 
 @RestController
-@RequestMapping("/testsessions")
 public class TestSessionController {
 
 	@Autowired
@@ -39,7 +38,7 @@ public class TestSessionController {
 		return this.testSessionService.getAll();
 	}
 	
-	@GetMapping("/{id}")
+	@GetMapping("/testsessions/{id}")
 	public ResponseEntity<TestSession> getById(@PathVariable UUID id){
 		var session = this.testSessionService.getById(id);
 		if (session == null)
@@ -57,7 +56,7 @@ public class TestSessionController {
 		return new ResponseEntity<TestSession>(session, HttpStatus.OK);
 	}
 	
-	@GetMapping("/{id}/result")
+	@GetMapping("/testsessions/{id}/result")
 	public ResponseEntity<Boolean> getResultById(@PathVariable UUID id){
 		
 		var session = this.testSessionService.getById(id);
@@ -76,7 +75,7 @@ public class TestSessionController {
 		return new ResponseEntity<Boolean>(session.getResult(), HttpStatus.OK);	
 	}
 	
-	@GetMapping("/by_name/result?name={name}")
+	@GetMapping("/testsessions/resultbyname/{name}")
 	public ResponseEntity<Boolean> getResultByName(@PathVariable String name){
 		
 		var session = this.testSessionService.getByName(name);
@@ -95,7 +94,7 @@ public class TestSessionController {
 		return new ResponseEntity<Boolean>(session.getResult(), HttpStatus.OK);	
 	}
 	
-	@RequestMapping(method = {RequestMethod.POST, RequestMethod.PUT})
+	@RequestMapping(path = "/testsessions", method = {RequestMethod.POST, RequestMethod.PUT})
 	@ResponseStatus(HttpStatus.CREATED)
 	public TestSession save(@Valid @RequestBody TestSession testSession) {
 		this.testSessionService.save(testSession);

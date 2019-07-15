@@ -76,6 +76,25 @@ public class TestSessionController {
 		return new ResponseEntity<Boolean>(session.getResult(), HttpStatus.OK);	
 	}
 	
+	@GetMapping("/result?name={name}")
+	public ResponseEntity<Boolean> getResultByName(@PathVariable String name){
+		
+		var session = this.testSessionService.getByName(name);
+		if (session == null)
+			return new ResponseEntity<Boolean>(HttpStatus.NOT_FOUND);
+		
+		var testRuns = this.testRunService.getByTestSessionId(session.getId());
+		
+		for(var testRun: testRuns) {
+			if(testRun.getResult()) {
+				session.setResult(testRun.getResult());
+				break;
+			}
+		}
+		
+		return new ResponseEntity<Boolean>(session.getResult(), HttpStatus.OK);	
+	}
+	
 	@RequestMapping(method = {RequestMethod.POST, RequestMethod.PUT})
 	@ResponseStatus(HttpStatus.CREATED)
 	public TestSession save(@Valid @RequestBody TestSession testSession) {

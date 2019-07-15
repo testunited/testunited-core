@@ -3,6 +3,9 @@ HELP.md
 build/
 !gradle/wrapper/gradle-wrapper.jar
 bin/
+*.dat
+.attach_*
+*.log
 
 ### STS ###
 .apt_generated

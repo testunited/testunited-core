@@ -17,6 +17,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.testunited.core.TestCase;
 import org.testunited.core.TestGroup;
 import org.testunited.core.TestRun;
+import org.testunited.core.TestSession;
 import org.testunited.core.TestTarget;
 import org.testunited.core.data.TestTargetRepository;
 import org.testunited.core.services.TestGroupService;
@@ -52,9 +53,15 @@ public class TestRunControllerTests {
 			"    \"name\"asdfaf \"my_test_group_2\"\n"+ 
 			"}";
 
-	private final TestRun testRun1 = new TestRun(new TestCase(UUID.fromString("3d50454f-0ba1-455b-8311-c7195c92e296")), new Date(), true, "mysession", null);
+	private final TestSession testSession1 = new TestSession(UUID.fromString("3d50454f-0ba1-455b-8311-c7195c92e295"), "mysession");
+	private final TestRun testRun1 = new TestRun(new TestCase(UUID.fromString("3d50454f-0ba1-455b-8311-c7195c92e291")), new Date(), true, null, testSession1);
+	private final TestRun testRun2 = new TestRun(new TestCase(UUID.fromString("3d50454f-0ba1-455b-8311-c7195c92e292")), new Date(), true, null, testSession1);
+	private final TestRun testRun3 = new TestRun(new TestCase(UUID.fromString("3d50454f-0ba1-455b-8311-c7195c92e293")), new Date(), false, null, testSession1);
 	private final TestGroup testTarget2 = new TestGroup(UUID.fromString("672124b6-9894-11e5-be38-001d42e813fe"), "my_test_group_2");
 
+	ArrayList<TestRun> testRuns_all = new ArrayList<TestRun>();
+	ArrayList<TestRun> testRuns_passed = new ArrayList<TestRun>();
+	ArrayList<TestRun> testRuns_failed = new ArrayList<TestRun>();
 	private final ArrayList<TestGroup> testTargetList = new ArrayList<TestGroup>();
 
 	@InjectMocks
@@ -69,6 +76,15 @@ public class TestRunControllerTests {
 		ObjectMapper testRunObjectMapper = new ObjectMapper();
 		String testRunJson = testRunObjectMapper.writeValueAsString(this.testRun1);
 		System.out.println(testRunJson);
+		
+		this.testRuns_all.add(testRun1);
+		this.testRuns_all.add(testRun2);
+		this.testRuns_all.add(testRun3);
+		
+		this.testRuns_passed.add(testRun1);
+		this.testRuns_passed.add(testRun2);
+		
+		this.testRuns_failed.add(testRun3);
 	}
 
 //	@Test
@@ -115,17 +131,32 @@ public class TestRunControllerTests {
 //				.andExpect(status().isCreated());
 //	}
 
-//	@Test
-//	@Tag("method:GET")
-//	@Tag("route:/booktitles")
-//	@Tag(TestTags.GROUP_REQUEST_VALIDATION)
-//	@Tag("case:bad_json")
-//	@DisplayName("Validate status code when bad JSON is sent")
-//	public void testAddBadRequestBadJson() throws Exception {
-//		this.mockMvc
-//				.perform(post("/booktitles").content(jsonSingleBookTitleBad).contentType(MediaType.APPLICATION_JSON))
-//				.andExpect(status().isBadRequest());
-//	}
+	@Test
+	public void testGetByTestSessionIdAndResult_all() throws Exception {
+		
+		when(this.serviceMock.getByTestSessionId(this.testSession1.getId())).thenReturn(this.testRuns_all);
+		this.mockMvc
+				.perform(get(String.format("/testsessions/%s/testruns", testSession1.getId())).contentType(MediaType.APPLICATION_JSON))
+				.andExpect(status().isOk()).andExpect(jsonPath("$.*", Matchers.hasSize(3)));
+	}
+	
+	@Test
+	public void testGetByTestSessionIdAndResult_passed() throws Exception {
+		
+		when(this.serviceMock.getByTestSessionIdAndResult(this.testSession1.getId(), true)).thenReturn(this.testRuns_passed);
+		this.mockMvc
+				.perform(get(String.format("/testsessions/%s/testruns?result=passed", testSession1.getId())).contentType(MediaType.APPLICATION_JSON))
+				.andExpect(status().isOk()).andExpect(jsonPath("$.*", Matchers.hasSize(2)));
+	}
+	
+	@Test
+	public void testGetByTestSessionIdAndResult_failed() throws Exception {
+		
+		when(this.serviceMock.getByTestSessionIdAndResult(this.testSession1.getId(), false)).thenReturn(this.testRuns_failed);
+		this.mockMvc
+				.perform(get(String.format("/testsessions/%s/testruns?result=failed", testSession1.getId())).contentType(MediaType.APPLICATION_JSON))
+				.andExpect(status().isOk()).andExpect(jsonPath("$.*", Matchers.hasSize(1)));
+	}
 //
 //	@Test
 //	public void testAddBadRequestNotJson() throws Exception {

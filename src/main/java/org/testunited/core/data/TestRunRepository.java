@@ -11,5 +11,6 @@ public interface TestRunRepository extends CrudRepository<TestRun, UUID> {
 	public List<TestRun> findByTestCaseId(UUID testCaseId);
 	public List<TestRun> findByTestSessionId(UUID testSessionId);
 	public List<TestRun> findByTestCaseIdAndTestSessionId(UUID testCaseId, UUID testSessionId);
+	public List<TestRun> findByTestSessionIdAndResult(UUID testSessionId, boolean result);
 
 }

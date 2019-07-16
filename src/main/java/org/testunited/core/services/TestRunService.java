@@ -33,6 +33,11 @@ public class TestRunService {
 	public List<TestRun> getByTestCaseIdAndTestSessionId(UUID testCaseId, UUID testSessionId) {
 		return testRunRepo.findByTestCaseIdAndTestSessionId(testCaseId, testSessionId);
 	}
+
+	public List<TestRun> getByTestSessionIdAndResult(UUID testSessionId, boolean result) {
+		return testRunRepo.findByTestSessionIdAndResult(testSessionId, result);
+	}
+	
 	public TestRun getById(UUID id) {
 		return this.testRunRepo.findById(id).get();
 	}

@@ -48,6 +48,11 @@ public class TestSession {
 		super();
 		this.name = name;
 	}
+	public TestSession(UUID id, @NotNull String name) {
+		super();
+		this.id = id;
+		this.name = name;
+	}
 	public TestSession() {
 		super();
 	}

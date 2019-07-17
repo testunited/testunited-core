@@ -120,7 +120,7 @@ public class TestResultSubmissionController {
 			// StdDateFormat is ISO8601 since jackson 2.9
 			mapper.setDateFormat(new StdDateFormat().withColonInTimeZone(true));
 			try {
-				String results = mapper.writeValueAsString(submission.getTestResults());
+				String results = mapper.writeValueAsString(submission);
 				logger.info(results);
 			} catch (JsonProcessingException e) {
 				// TODO Auto-generated catch block
@@ -129,21 +129,21 @@ public class TestResultSubmissionController {
 		}
 
 		for (TestResult r : submission.getTestResults())
-			this.saveTestResult(r, submission.getSession());
+			this.saveTestResult(r, submission.getSessionName());
 		
 		return submission;
 	}
 	
-	private void saveTestResult(TestResult testResult, String session) {
+	private void saveTestResult(TestResult testResult, String sessionName) {
 		TestCase testCase = testCaseService.getByTestSourceId(testResult.getTestSourceId());
 		if (testCase == null) {
 			testCase = new TestCase(testResult.getTestSourceId(), testResult.getTestSourceId(), null);
 			this.testCaseService.save(testCase);
 		}
 
-		TestSession testSession = this.testSessionService.getByName(session);
+		TestSession testSession = this.testSessionService.getByName(sessionName);
 		if(testSession == null) {
-			testSession = new TestSession(session);
+			testSession = new TestSession(sessionName);
 			this.testSessionService.save(testSession);
 		}
 		

@@ -111,7 +111,7 @@ public class TestResultSubmissionController {
 	
 	@PostMapping("/testresultsubmissions")
 	@ResponseStatus(HttpStatus.CREATED)
-	public TestResultSubmission save(@RequestBody TestResultSubmission submission) {
+	public TestResultSubmissionSummary save(@RequestBody TestResultSubmission submission) {
 
 		if (logger.isInfoEnabled()) {
 			ObjectMapper mapper = new ObjectMapper();
@@ -128,28 +128,60 @@ public class TestResultSubmissionController {
 			}
 		}
 
-		for (TestResult r : submission.getTestResults())
-			this.saveTestResult(r, submission.getSessionName());
+		TestSession testSession = this.testSessionService.getByName(submission.getSessionName());
 		
-		return submission;
+		if(testSession == null) {
+			testSession = new TestSession(submission.getSessionName());
+			this.testSessionService.save(testSession);
+		}
+		
+		for (TestResult r : submission.getTestResults())
+			this.saveTestResult(r, testSession);
+		
+		return new TestResultSubmissionSummary(testSession.getId(), submission.getTestResults().size());
 	}
 	
-	private void saveTestResult(TestResult testResult, String sessionName) {
+	private void saveTestResult(TestResult testResult, TestSession testSession) {
+		
 		TestCase testCase = testCaseService.getByTestSourceId(testResult.getTestSourceId());
+		
 		if (testCase == null) {
 			testCase = new TestCase(testResult.getTestSourceId(), testResult.getTestSourceId(), null);
 			this.testCaseService.save(testCase);
-		}
-
-		TestSession testSession = this.testSessionService.getByName(sessionName);
-		if(testSession == null) {
-			testSession = new TestSession(sessionName);
-			this.testSessionService.save(testSession);
 		}
 		
 		TestRun testRun = new TestRun(testCase, testResult.getTimeStamp(), testResult.getResult(),
 				testResult.getReason(), testSession);
 
 		this.testRunService.save(testRun);
+	}
+	
+	class TestResultSubmissionSummary{
+		
+		private UUID testSessionId;
+		private int testCaseCount;
+		
+		TestResultSubmissionSummary(UUID testSessionId, int testCaseCount){
+			this.testSessionId = testSessionId;
+			this.testCaseCount = testCaseCount;
+		}
+
+		public UUID getTestSessionId() {
+			return testSessionId;
+		}
+
+		public void setTestSessionId(UUID testSessionId) {
+			this.testSessionId = testSessionId;
+		}
+
+		public int getTestCaseCount() {
+			return testCaseCount;
+		}
+
+		public void setTestCaseCount(int testCaseCount) {
+			this.testCaseCount = testCaseCount;
+		}
+		
+		
 	}
 }

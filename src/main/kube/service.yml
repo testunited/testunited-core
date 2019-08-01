@@ -4,11 +4,10 @@ metadata:
   namespace: testunited
   name: core
 spec:
-  type: NodePort
+  type: LoadBalancer
   selector:
     app: core
   ports:
   - protocol: TCP
     port: 80
     targetPort: 9001
-    nodePort: 32101

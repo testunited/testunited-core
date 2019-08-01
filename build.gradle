@@ -19,7 +19,7 @@ plugins {
 apply plugin: 'io.spring.dependency-management'
 
 group = 'org.testunited'
-version = '0.0.1-SNAPSHOT'
+version = '0.1.0'
 
 repositories {
 	mavenCentral()
@@ -82,4 +82,10 @@ task runJar(group: "Run", description: "Runs the Jar built by the 'build' task",
     dependsOn = [build, test]
     main = "-jar";
     args jar.archivePath
+}
+
+task bootJarVersion{
+    doLast {
+    	println bootJar.version
+  }
 }

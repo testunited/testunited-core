@@ -1,6 +1,5 @@
 package org.testunited.core.web;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -11,18 +10,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.testunited.core.TestSession;
-import org.testunited.core.TestTarget;
-import org.testunited.core.services.TestRunService;
 import org.testunited.core.services.TestSessionService;
-import org.testunited.core.services.TestTargetService;
 
 @RestController
 public class TestSessionController {
@@ -30,9 +24,7 @@ public class TestSessionController {
 	@Autowired
 	TestSessionService testSessionService;
 
-
-	
-	@GetMapping
+	@GetMapping("/testsessions")
 	public List<TestSession> getAll(){
 		return this.testSessionService.getAll();
 	}
@@ -40,6 +32,7 @@ public class TestSessionController {
 	@GetMapping("/testsessions/{id}")
 	public ResponseEntity<TestSession> getById(@PathVariable UUID id){
 		var session = this.testSessionService.getById(id);
+		
 		if (session == null)
 			return new ResponseEntity<TestSession>(HttpStatus.NOT_FOUND);
 		
@@ -49,25 +42,13 @@ public class TestSessionController {
 	}
 	
 	@GetMapping("/testsessions/{id}/result")
-	public ResponseEntity<Boolean> getResultById(@PathVariable UUID id){
-		
+	public ResponseEntity<Boolean> getResultById(@PathVariable UUID id){		
 		var session = this.testSessionService.getById(id);
+		
 		if (session == null)
 			return new ResponseEntity<Boolean>(HttpStatus.NOT_FOUND);
 		
 		session.setResult(this.testSessionService.getOverallResult(id));
-		
-		return new ResponseEntity<Boolean>(session.getResult(), HttpStatus.OK);	
-	}
-	
-	@GetMapping("/testsessions/resultbyname/{name}")
-	public ResponseEntity<Boolean> getResultByName(@PathVariable String name){
-		
-		var session = this.testSessionService.getByName(name);
-		if (session == null)
-			return new ResponseEntity<Boolean>(HttpStatus.NOT_FOUND);
-		
-		session.setResult(this.testSessionService.getOverallResult(session.getId()));
 		
 		return new ResponseEntity<Boolean>(session.getResult(), HttpStatus.OK);	
 	}

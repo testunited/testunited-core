@@ -1,29 +1,68 @@
 pipeline {
     agent any 
     environment {
-       field = 'some'
-   }
+    	APP_NAME = "core"
+        GIT_SSH_KEY='chamith_github'
+        DOCKER_IMAGE_LOCAL="testunited/testunited-${APP_NAME}"
+        KUBE_NS="testunited-int"
+        REGISTRY_CREDENTIALS="chamith_dockerhub"
+    }
+    
     stages {
+   		stage('Define') {
+   			steps {
+   				script {
+		        	version = sh(returnStdout: true, script: "gradle -q bootJarVersion").trim()
+		        	BUILD_TAG = "v${version}-b${BUILD_NUMBER}"
+        			TESTUNITED_SESSION_NAME = "${env.JOB_BASE_NAME}-ci-build-${BUILD_TAG}"
+        			DOCKER_IMAGE_REMOTE="${DOCKER_IMAGE_LOCAL}:${BUILD_TAG}"
+		        }
+   			}
+   		}
+   		
         stage('Build') { 
             steps {
                 sh "gradle build -x test"
             }
         }
+        
         stage('Dev Test') { 
             steps {
-                sh "gradle test"
+                sh "gradle test -Dtestunited.testsession.name=${TESTUNITED_SESSION_NAME}"
             }
         }
+        
         stage('Package') { 
-            steps {
+            steps{
                 sh "gradle jar docker"
-                sh "docker tag testunited/testunited-core registry.minikube.local:80/testunited/testunited-core:${BUILD_NUMBER}"
-                sh "docker push registry.minikube.local:80/testunited/testunited-core:${BUILD_NUMBER}"
             }
         }
+        
+        stage('Tag') {
+            steps{
+                sh "git tag ${BUILD_TAG}"
+
+                sshagent(["${GIT_SSH_KEY}"]) {
+                    sh "git push origin HEAD:master ${BUILD_TAG}"
+                }
+                
+                sh "docker tag ${DOCKER_IMAGE_LOCAL} ${DOCKER_IMAGE_REMOTE}"
+            }
+        }
+        
+        stage('Publish') { 
+            steps {
+                script {
+                    docker.withRegistry( '', REGISTRY_CREDENTIALS ) {
+                        sh "docker push ${DOCKER_IMAGE_REMOTE}"
+                    }
+                }
+            }
+        }
+        
         stage('Deploy') { 
             steps {
-                sh "kubectl set image deployment/core core=registry.minikube.local:80/testunited/testunited-core:${BUILD_NUMBER} -n testunited"
+                sh "kubectl set image deployment/${APP_NAME} ${APP_NAME}=${DOCKER_IMAGE_REMOTE} -n ${KUBE_NS}"
             }
         }
     }

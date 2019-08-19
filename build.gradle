@@ -19,7 +19,7 @@ plugins {
 apply plugin: 'io.spring.dependency-management'
 
 group = 'org.testunited'
-version = '0.1.0'
+version = '0.1.1'
 
 repositories {
 	mavenCentral()

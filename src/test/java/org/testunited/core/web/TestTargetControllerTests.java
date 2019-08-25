@@ -14,6 +14,7 @@ import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.testunited.core.Component;
 import org.testunited.core.TestTarget;
 import org.testunited.core.data.TestTargetRepository;
 import org.testunited.core.services.TestTargetService;
@@ -43,8 +44,8 @@ public class TestTargetControllerTests {
 			"    \"method\": \"POST\"\n" + 
 			"}";
 
-	private final TestTarget testTarget1 = new TestTarget(UUID.fromString("672124b6-9894-11e5-be38-001d42e813fe"), "test_ms_1", "/", "GET");
-	private final TestTarget testTarget2 = new TestTarget(UUID.fromString("672124b6-9894-11e5-be38-001d42e813fe"), "test_ms_2", "/items", "POST");
+	private final TestTarget testTarget1 = new TestTarget(UUID.fromString("672124b6-9894-11e5-be38-001d42e813fe"), new Component("test_ms_1",UUID.fromString("672124b6-9894-11e5-be38-001d42e813fe")), "GET All");
+	private final TestTarget testTarget2 = new TestTarget(UUID.fromString("672124b6-9894-11e5-be38-001d42e813fe"), new Component("test_ms_1",UUID.fromString("672124b6-9894-11e5-be38-001d42e813fe")), "GET One");
 
 	private final ArrayList<TestTarget> testTargetList = new ArrayList<TestTarget>();
 

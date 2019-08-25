@@ -3,69 +3,65 @@ package org.testunited.core;
 import java.util.UUID;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 @Entity
 public class TestTarget {
 
 	@Id
 	@GeneratedValue
-	@org.hibernate.annotations.Type(type="uuid-char")
+	@org.hibernate.annotations.Type(type = "uuid-char")
 	private UUID id;
 
-	private String microservice;
+	@ManyToOne
+	@NotNull
+	private Component component;
 
-	private String path;
+	@NotNull
+	private String function;
 
-	private String method;
-	public TestTarget(UUID id, String microservice, String path, String method) {
+	public TestTarget(UUID id, Component component, String function) {
 		super();
 		this.id = id;
-		this.microservice = microservice;
-		this.path = path;
-		this.method = method;
+		this.component = component;
+		this.function = function;
 	}
-	public TestTarget(String microservice, String path, String method) {
+
+	public TestTarget(Component component, String function) {
 		super();
-		this.microservice = microservice;
-		this.path = path;
-		this.method = method;
+		this.component = component;
+		this.function = function;
 	}
+
 	public TestTarget(UUID id) {
 		this.id = id;
 	}
+
 	public TestTarget() {
 	}
-	
+
 	public UUID getId() {
 		return id;
 	}
 
-	public String getMethod() {
-		return method;
+	public Component getComponent() {
+		return component;
 	}
 
-	public String getMicroservice() {
-		return microservice;
+	public void setComponent(Component component) {
+		this.component = component;
 	}
 
-	public String getPath() {
-		return path;
+	public String getFunction() {
+		return function;
+	}
+
+	public void setFunction(String function) {
+		this.function = function;
 	}
 
 	public void setId(UUID id) {
 		this.id = id;
-	}
-
-	public void setMethod(String method) {
-		this.method = method;
-	}
-
-	public void setMicroservice(String microservice) {
-		this.microservice = microservice;
-	}
-
-	public void setPath(String path) {
-		this.path = path;
 	}
 
 }

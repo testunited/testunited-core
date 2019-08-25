@@ -41,8 +41,8 @@ public class TestGroupControllerTests {
 			"    \"name\"asdfaf \"my_test_group_2\"\n"+ 
 			"}";
 
-	private final TestGroup testTarget1 = new TestGroup(UUID.fromString("672124b6-9894-11e5-be38-001d42e813fe"), "my_test_group_1");
-	private final TestGroup testTarget2 = new TestGroup(UUID.fromString("672124b6-9894-11e5-be38-001d42e813fe"), "my_test_group_2");
+	private final TestGroup testGroup1 = new TestGroup(UUID.fromString("672124b6-9894-11e5-be38-001d42e813fe"), "my_test_group_1", UUID.fromString("672124b6-9894-11e5-be38-001d42e813f1"));
+	private final TestGroup testGroup2 = new TestGroup(UUID.fromString("672124b6-9894-11e5-be38-001d42e813f3"), "my_test_group_2", UUID.fromString("672124b6-9894-11e5-be38-001d42e813f1"));
 
 	private final ArrayList<TestGroup> testTargetList = new ArrayList<TestGroup>();
 
@@ -65,7 +65,7 @@ public class TestGroupControllerTests {
 
 	@Test
 	public void testGetById() throws Exception {
-		when(serviceMock.getById(UUID.fromString("672124b6-9894-11e5-be38-001d42e813fe"))).thenReturn(this.testTarget1);
+		when(serviceMock.getById(UUID.fromString("672124b6-9894-11e5-be38-001d42e813fe"))).thenReturn(this.testGroup1);
 
 		this.mockMvc.perform(get("/testgroups/672124b6-9894-11e5-be38-001d42e813fe").accept(MediaType.APPLICATION_JSON)).andExpect(status().isOk())
 				.andExpect(jsonPath("$.id", Matchers.is("672124b6-9894-11e5-be38-001d42e813fe")))
@@ -82,8 +82,8 @@ public class TestGroupControllerTests {
 	@Test
 	public void testGetAll() throws Exception {
 
-		this.testTargetList.add(this.testTarget1);
-		this.testTargetList.add(this.testTarget2);
+		this.testTargetList.add(this.testGroup1);
+		this.testTargetList.add(this.testGroup2);
 
 		when(serviceMock.getAll()).thenReturn(this.testTargetList);
 

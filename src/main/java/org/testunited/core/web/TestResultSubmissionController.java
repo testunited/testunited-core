@@ -130,10 +130,10 @@ public class TestResultSubmissionController {
 			}
 		}
 
-		TestSession testSession = this.testSessionService.getByName(submission.getSessionName());
+		TestSession testSession = this.testSessionService.get(submission.getApplication().getId(), submission.getEnvironmentName(), submission.getSessionName());
 		
 		if(testSession == null) {
-			testSession = new TestSession(submission.getSessionName());
+			testSession = new TestSession(submission.getSessionName(), submission.getApplication().getId(), submission.getEnvironmentName());
 			this.testSessionService.save(testSession);
 		}
 		
@@ -148,7 +148,7 @@ public class TestResultSubmissionController {
 		TestCase testCase = testCaseService.getByTestSourceId(testResult.getTestSourceId());
 		
 		if (testCase == null) {
-			testCase = new TestCase(testResult.getTestSourceId(), testResult.getTestSourceId(), null);
+			testCase = new TestCase(testResult.getTestSourceId(), testResult.getTestSourceId(), null, testSession.getApplication().getId());
 			this.testCaseService.save(testCase);
 		}
 		

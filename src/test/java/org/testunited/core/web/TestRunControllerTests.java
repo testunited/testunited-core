@@ -53,11 +53,11 @@ public class TestRunControllerTests {
 			"    \"name\"asdfaf \"my_test_group_2\"\n"+ 
 			"}";
 
-	private final TestSession testSession1 = new TestSession(UUID.fromString("3d50454f-0ba1-455b-8311-c7195c92e295"), "mysession");
+	private final TestSession testSession1 = new TestSession(UUID.fromString("3d50454f-0ba1-455b-8311-c7195c92e295"), "mysession", UUID.fromString("672124b6-9894-11e5-be38-001d42e813f1"), "prod");
 	private final TestRun testRun1 = new TestRun(new TestCase(UUID.fromString("3d50454f-0ba1-455b-8311-c7195c92e291")), new Date(), true, null, testSession1);
 	private final TestRun testRun2 = new TestRun(new TestCase(UUID.fromString("3d50454f-0ba1-455b-8311-c7195c92e292")), new Date(), true, null, testSession1);
 	private final TestRun testRun3 = new TestRun(new TestCase(UUID.fromString("3d50454f-0ba1-455b-8311-c7195c92e293")), new Date(), false, null, testSession1);
-	private final TestGroup testTarget2 = new TestGroup(UUID.fromString("672124b6-9894-11e5-be38-001d42e813fe"), "my_test_group_2");
+	private final TestGroup testGroup1 = new TestGroup(UUID.fromString("672124b6-9894-11e5-be38-001d42e813fe"), "my_test_group_2", UUID.fromString("672124b6-9894-11e5-be38-001d42e813f1"));
 
 	ArrayList<TestRun> testRuns_all = new ArrayList<TestRun>();
 	ArrayList<TestRun> testRuns_passed = new ArrayList<TestRun>();

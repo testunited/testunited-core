@@ -18,6 +18,7 @@ public class TestSessionService {
 	private TestSessionRepository testSessionRepo;
 	@Autowired
 	TestRunService testRunService;
+	
 	public void save(TestSession testSession) {
 		this.testSessionRepo.save(testSession);
 	}
@@ -26,8 +27,8 @@ public class TestSessionService {
 		return this.testSessionRepo.findById(id).get();
 	}
 	
-	public TestSession getByName(String name) {
-		return testSessionRepo.findByName(name);
+	public TestSession get(UUID applicationId, String environment, String name) {
+		return testSessionRepo.findByApplicationIdAndEnvironmentAndName(applicationId, environment, name);
 	}
 	
 	public List<TestSession> getAll(){

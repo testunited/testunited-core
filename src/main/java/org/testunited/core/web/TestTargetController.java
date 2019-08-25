@@ -30,10 +30,6 @@ public class TestTargetController {
 	@Autowired
 	TestTargetService testTargetService;
 	
-	@GetMapping("/hello")
-	public String sayHello() {
-		return "hello";
-	}
 	@GetMapping
 	public ArrayList<TestTarget> getAll(){
 		return this.testTargetService.getAll();

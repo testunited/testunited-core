@@ -5,24 +5,40 @@ import java.util.UUID;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
 
 @Entity
-@Table(uniqueConstraints={@UniqueConstraint(columnNames = {"name"})})
+@Table(uniqueConstraints={@UniqueConstraint(columnNames = {"name", "application_id", "environment"})})
 public class TestSession {
 	@Id
 	@GeneratedValue
 	@org.hibernate.annotations.Type(type="uuid-char")
 	private UUID id;
 	
+	@ManyToOne
+	@NotNull
+	private Application application;
+	
+	@NotNull
+	private String environment;
+	
 	@NotNull
 	private String name;
 	
 	@Transient
 	private boolean result;
+	
+	public Application getApplication() {
+		return application;
+	}
+
+	public void setApplication(Application application) {
+		this.application = application;
+	}
 	
 	public UUID getId() {
 		return id;
@@ -44,14 +60,18 @@ public class TestSession {
 	public void setResult(boolean result) {
 		this.result = result;
 	} 
-	public TestSession(String name) {
+	public TestSession(String name, UUID applicationId, String environment) {
 		super();
 		this.name = name;
+		this.application = new Application(applicationId);
+		this.environment = environment;
 	}
-	public TestSession(UUID id, @NotNull String name) {
+	public TestSession(UUID id, @NotNull String name, UUID applicationId, String environment) {
 		super();
 		this.id = id;
 		this.name = name;
+		this.application = new Application(applicationId);
+		this.environment = environment;
 	}
 	public TestSession() {
 		super();

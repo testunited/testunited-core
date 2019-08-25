@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
@@ -65,7 +66,17 @@ public class TestCaseController {
 	
 	@PostMapping("/testtargets/{testTargetId}/testgroups/{testGroupId}/testcases")
 	@ResponseStatus(HttpStatus.CREATED)
-	public TestCase save(@PathVariable UUID testTargetId, 
+	public TestCase add(@PathVariable UUID testTargetId, 
+			@PathVariable UUID testGroupId, 
+			@Valid @RequestBody TestCase testCase) {
+		testCase.setTestGroup(new TestGroup(testGroupId));
+		testCase.setTestTarget(new TestTarget(testTargetId));
+		this.testCaseService.save(testCase);
+		return testCase;
+	}
+	
+	@PutMapping("/testtargets/{testTargetId}/testgroups/{testGroupId}/testcases")
+	public TestCase update(@PathVariable UUID testTargetId, 
 			@PathVariable UUID testGroupId, 
 			@Valid @RequestBody TestCase testCase) {
 		testCase.setTestGroup(new TestGroup(testGroupId));

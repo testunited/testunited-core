@@ -14,8 +14,8 @@ import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
 
 @Entity
-@Table(uniqueConstraints={@UniqueConstraint(columnNames = {"testSourceId"})})
-public class TestCase {
+@Table(uniqueConstraints={@UniqueConstraint(columnNames = {"name","application_id"})})
+public class Component {
 	
 	@Id
 	@GeneratedValue
@@ -23,46 +23,33 @@ public class TestCase {
 	private UUID id;
 	
 	@NotNull
-	private String testSourceId;
 	private String name;
 	private String description;
 	
-	@ManyToOne
+	@ManyToOne//(cascade=CascadeType.ALL)
 	@NotNull
 	private Application application;
 	
-	@ManyToOne//(cascade=CascadeType.ALL)
-	private TestTarget testTarget;
-	
-	@ManyToOne//(cascade=CascadeType.ALL)
-	private TestGroup testGroup;
-
-	public TestCase() {
+	public Component() {
 	}
 
-	public TestCase(UUID id) {
+	public Component(UUID id) {
 		super();
 		this.id = id;
 	}
-	public TestCase(String sourceId, String name, String description, UUID applicationId) {
+	public Component(String name, UUID applicationId) {
 		super();
-		this.testSourceId = sourceId;
+		this.name = name;
+		this.application = new Application(applicationId);
+	}
+
+	public Component(String name, String description, UUID applicationId) {
+		super();
 		this.name = name;
 		this.description = description;
 		this.application = new Application(applicationId);
 	}
-
-	public TestCase(UUID uuid, String sourceId, String name, String description, UUID applicationId, UUID testTargetId, UUID testGroupId) {
-		super();
-		this.id = uuid;
-		this.testSourceId = sourceId;
-		this.name = name;
-		this.description = description;
-		this.application = new Application(applicationId);
-		this.testTarget = new TestTarget(testTargetId);
-		this.testGroup = new TestGroup(testGroupId);
-	}
-
+	
 	public Application getApplication() {
 		return application;
 	}
@@ -79,14 +66,6 @@ public class TestCase {
 		return name;
 	}
 
-	public TestGroup getTestGroup() {
-		return testGroup;
-	}
-
-	public TestTarget getTestTarget() {
-		return testTarget;
-	}
-
 	public UUID getId() {
 		return id;
 	}
@@ -99,24 +78,7 @@ public class TestCase {
 		this.name = name;
 	}
 
-	public void setTestGroup(TestGroup testGroup) {
-		this.testGroup = testGroup;
-	}
-
-	public void setTestTarget(TestTarget testTarget) {
-		this.testTarget = testTarget;
-	}
-
 	public void setId(UUID uuid) {
 		this.id = uuid;
 	}
-
-	public String getTestSourceId() {
-		return testSourceId;
-	}
-
-	public void setTestSourceId(String sourceId) {
-		this.testSourceId = sourceId;
-	}
-
 }

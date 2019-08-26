@@ -31,9 +31,8 @@ public class TestTargetControllerTests {
 	private final String jsonSingleTestTargetGood = 
 			"{\n" + 
 			"    \"id\": \"672124b6-9894-11e5-be38-001d42e813fe\",\n" + 
-			"    \"microservice\": \"test_ms_1\",\n"+ 
-			"    \"path\": \"/\",\n" + 
-			"    \"method\": \"GET\"\n" + 
+			"    \"component\": { \"id\":\"672124b6-9894-11e5-be38-001d42e813fe\", \"name\": \"test_ms_1\"},\n"+ 
+			"    \"function\": \"GET\"\n" + 
 			"}";
 
 	private final String jsonSingleTestTargetBad = 
@@ -67,9 +66,8 @@ public class TestTargetControllerTests {
 
 		this.mockMvc.perform(get("/testtargets/672124b6-9894-11e5-be38-001d42e813fe").accept(MediaType.APPLICATION_JSON)).andExpect(status().isOk())
 				.andExpect(jsonPath("$.id", Matchers.is("672124b6-9894-11e5-be38-001d42e813fe")))
-				.andExpect(jsonPath("$.microservice", Matchers.is("test_ms_1")))
-				.andExpect(jsonPath("$.path", Matchers.is("/")))
-				.andExpect(jsonPath("$.method", Matchers.is("GET")));
+				.andExpect(jsonPath("$.component.name", Matchers.is("test_ms_1")))
+				.andExpect(jsonPath("$.function", Matchers.is("GET All")));
 	}
 	
 	@Test

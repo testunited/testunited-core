@@ -32,7 +32,7 @@ public class TestTargetControllerTests {
 			"{\n" + 
 			"    \"id\": \"672124b6-9894-11e5-be38-001d42e813fe\",\n" + 
 			"    \"component\": { \"id\":\"672124b6-9894-11e5-be38-001d42e813fe\", \"name\": \"test_ms_1\"},\n"+ 
-			"    \"function\": \"GET\"\n" + 
+			"    \"name\": \"GET\"\n" + 
 			"}";
 
 	private final String jsonSingleTestTargetBad = 
@@ -67,7 +67,7 @@ public class TestTargetControllerTests {
 		this.mockMvc.perform(get("/testtargets/672124b6-9894-11e5-be38-001d42e813fe").accept(MediaType.APPLICATION_JSON)).andExpect(status().isOk())
 				.andExpect(jsonPath("$.id", Matchers.is("672124b6-9894-11e5-be38-001d42e813fe")))
 				.andExpect(jsonPath("$.component.name", Matchers.is("test_ms_1")))
-				.andExpect(jsonPath("$.function", Matchers.is("GET All")));
+				.andExpect(jsonPath("$.name", Matchers.is("GET All")));
 	}
 	
 	@Test

@@ -15,11 +15,16 @@ public class TestRunService {
 	private TestRunRepository testRunRepo;
 	
 	public void save(TestRun testGroup) {
+
+		if(testGroup.getId() == null)
+			testGroup.setId(UUID.randomUUID());		
+		
 		this.testRunRepo.save(testGroup);
 	}
 	
 	public void save(List<TestRun> testRuns) {
-		this.testRunRepo.saveAll(testRuns);
+		for(TestRun testRun: testRuns)
+			this.save(testRun);
 	}
 	
 	public List<TestRun> getByTestCaseId(UUID testCaseId) {

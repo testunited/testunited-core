@@ -31,6 +31,11 @@ public class TestSessionController {
 		return this.testSessionService.getAll();
 	}
 	
+	@GetMapping("/applications/{applicationId}/testsessions")
+	public List<TestSession> getByApplicationId(@PathVariable UUID applicationId){
+		return this.testSessionService.getByApplicationId(applicationId);
+	}
+	
 	@GetMapping("/testsessions/{id}")
 	public ResponseEntity<TestSession> getById(@PathVariable UUID id){
 		var session = this.testSessionService.getById(id);

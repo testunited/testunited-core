@@ -5,7 +5,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.*;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
 import org.hamcrest.Matchers;
@@ -18,33 +17,26 @@ import org.testunited.core.TestCase;
 import org.testunited.core.TestGroup;
 import org.testunited.core.TestRun;
 import org.testunited.core.TestSession;
-import org.testunited.core.TestTarget;
-import org.testunited.core.data.TestTargetRepository;
-import org.testunited.core.services.TestGroupService;
 import org.testunited.core.services.TestRunService;
-import org.testunited.core.services.TestTargetService;
-
-import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializerProvider;
-
-import net.minidev.json.reader.JsonWriter;
-
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
 import java.util.Date;
 import java.util.UUID;
+
 @SpringBootTest
 @TestInstance(Lifecycle.PER_CLASS)
 public class TestRunControllerTests {
 
 	private MockMvc mockMvc;
 
-	private final String jsonSingleTestGroupGood = 
+	private final String jsonSingleTestRunGood = 
 			"{\n" + 
 			"    \"id\": \"672124b6-9894-11e5-be38-001d42e813fe\",\n" + 
-			"    \"name\": \"my_test_group_1\"\n"+ 
+			"    \"name\": \"my_test_group_1\",\n"+ 
+			"    \"testCase\":{\"id\": \"672124b6-9894-11e5-be38-001d42e813fe\"},\n" + 
+			"    \"testSession\":{\"id\": \"672124b6-9894-11e5-be38-001d42e813fe\"},\n" + 
+			"    \"timeStamp\": \"2019-08-01\"\n"+ 
 			"}";
 
 	private final String jsonSingleTestGroupBad = 
@@ -117,9 +109,8 @@ public class TestRunControllerTests {
 //
 	@Test
 	public void testAdd() throws Exception {
-				
 		this.mockMvc
-				.perform(post("/testruns").content(this.jsonSingleTestGroupGood).contentType(MediaType.APPLICATION_JSON))
+				.perform(post("/testruns").content(this.jsonSingleTestRunGood).contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isCreated());
 	}
 //	
@@ -133,7 +124,6 @@ public class TestRunControllerTests {
 
 	@Test
 	public void testGetByTestSessionIdAndResult_all() throws Exception {
-		
 		when(this.serviceMock.getByTestSessionId(this.testSession1.getId())).thenReturn(this.testRuns_all);
 		this.mockMvc
 				.perform(get(String.format("/testsessions/%s/testruns", testSession1.getId())).contentType(MediaType.APPLICATION_JSON))
@@ -142,7 +132,6 @@ public class TestRunControllerTests {
 	
 	@Test
 	public void testGetByTestSessionIdAndResult_passed() throws Exception {
-		
 		when(this.serviceMock.getByTestSessionIdAndResult(this.testSession1.getId(), true)).thenReturn(this.testRuns_passed);
 		this.mockMvc
 				.perform(get(String.format("/testsessions/%s/testruns?result=passed", testSession1.getId())).contentType(MediaType.APPLICATION_JSON))
@@ -151,12 +140,12 @@ public class TestRunControllerTests {
 	
 	@Test
 	public void testGetByTestSessionIdAndResult_failed() throws Exception {
-		
 		when(this.serviceMock.getByTestSessionIdAndResult(this.testSession1.getId(), false)).thenReturn(this.testRuns_failed);
 		this.mockMvc
 				.perform(get(String.format("/testsessions/%s/testruns?result=failed", testSession1.getId())).contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk()).andExpect(jsonPath("$.*", Matchers.hasSize(1)));
-	}
+	}	
+
 //
 //	@Test
 //	public void testAddBadRequestNotJson() throws Exception {

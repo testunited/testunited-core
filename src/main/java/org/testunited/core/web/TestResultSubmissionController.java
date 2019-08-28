@@ -57,11 +57,6 @@ public class TestResultSubmissionController {
 	@Autowired
 	TestGroupService testGroupService;
 
-	@GetMapping("/testresults/hello")
-	public String sayHello() {
-		return "hello";
-	}
-
 //	@PostMapping("/testresults")
 //	@ResponseStatus(HttpStatus.CREATED)
 //	public TestResult save(@Valid @RequestBody TestResult testResult) {

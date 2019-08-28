@@ -18,7 +18,7 @@ import javax.validation.constraints.NotNull;
 public class Application {
 	
 	@Id
-	@GeneratedValue
+//	@GeneratedValue
 	@org.hibernate.annotations.Type(type="uuid-char")
 	private UUID id;
 	

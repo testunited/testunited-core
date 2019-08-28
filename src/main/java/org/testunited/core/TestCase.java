@@ -18,12 +18,13 @@ import javax.validation.constraints.NotNull;
 public class TestCase {
 	
 	@Id
-	@GeneratedValue
+//	@GeneratedValue
 	@org.hibernate.annotations.Type(type="uuid-char")
 	private UUID id;
 	
 	@NotNull
 	private String testSourceId;
+	@NotNull
 	private String name;
 	private String description;
 	

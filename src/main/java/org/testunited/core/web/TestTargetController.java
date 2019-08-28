@@ -23,19 +23,23 @@ import org.testunited.core.TestTarget;
 import org.testunited.core.services.TestTargetService;
 
 @RestController
-@RequestMapping("/testtargets")
 @CrossOrigin
 public class TestTargetController {
 
 	@Autowired
 	TestTargetService testTargetService;
 	
-	@GetMapping
-	public ArrayList<TestTarget> getAll(){
+	@GetMapping("/testtargets")
+	public List<TestTarget> getAll(){
 		return this.testTargetService.getAll();
 	}
 	
-	@GetMapping("/{id}")
+	@GetMapping("/components/{componentId}/testtargets")
+	public List<TestTarget> getByComponentId(@PathVariable UUID componentId){
+		return this.testTargetService.getByComponentId(componentId);
+	}
+	
+	@GetMapping("/testtargets/{id}")
 	public ResponseEntity<TestTarget> getById(@PathVariable UUID id){
 		var target = this.testTargetService.getById(id);
 		if (target == null)
@@ -43,16 +47,16 @@ public class TestTargetController {
 		return new ResponseEntity<TestTarget>(target, HttpStatus.OK);
 	}
 	
-	@RequestMapping(method = {RequestMethod.POST, RequestMethod.PUT})
+	@RequestMapping(path="/testtargets", method = {RequestMethod.POST, RequestMethod.PUT})
 	@ResponseStatus(HttpStatus.CREATED)
 	public TestTarget save(@Valid @RequestBody TestTarget testTarget) {
 		this.testTargetService.save(testTarget);
 		return testTarget;
 	}
 	
-	@PostMapping("/bulk")
+	@PostMapping("/testtargets/bulk")
 	@ResponseStatus(HttpStatus.CREATED)
-	public List<TestTarget> saveMany(@RequestBody List<TestTarget> testTargets) {
+	public List<TestTarget> save(@RequestBody List<TestTarget> testTargets) {
 		for(TestTarget testTarget: testTargets)
 			this.testTargetService.save(testTarget);
 		return testTargets;

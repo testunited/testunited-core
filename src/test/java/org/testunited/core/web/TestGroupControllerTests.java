@@ -32,7 +32,8 @@ public class TestGroupControllerTests {
 	private final String jsonSingleTestGroupGood = 
 			"{\n" + 
 			"    \"id\": \"672124b6-9894-11e5-be38-001d42e813fe\",\n" + 
-			"    \"name\": \"my_test_group_1\"\n"+ 
+			"    \"name\": \"my_test_group_1\",\n"+ 
+			"    \"application\": {\"id\":\"672124b6-9894-11e5-be38-001d42e813fe\"}\n"+ 
 			"}";
 
 	private final String jsonSingleTestGroupBad = 
@@ -58,10 +59,6 @@ public class TestGroupControllerTests {
 
 	}
 
-	@Test
-	public void testHello() throws Exception {
-		this.mockMvc.perform(get("/testgroups/hello")).andExpect(status().isOk()).andExpect(content().string("hello"));
-	}
 
 	@Test
 	public void testGetById() throws Exception {

@@ -28,11 +28,12 @@ public class TestCaseController {
 
 	@Autowired
 	TestCaseService testCaseService;
-	
-	@GetMapping("/testcases/hello")
-	public String sayHello() {
-		return "hello";
+
+	@GetMapping("/applications/{applicationId}/testcases")
+	public List<TestCase> getByApplicationId(@PathVariable UUID applicationId){
+		return this.testCaseService.getByApplicationId(applicationId);
 	}
+	
 	@GetMapping("/testtargets/{testTargetId}/testcases")
 	public List<TestCase> getByTestTargetId(@PathVariable UUID testTargetId){
 		return this.testCaseService.getByTestTargetId(testTargetId);

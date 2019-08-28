@@ -4,22 +4,27 @@ import java.util.Date;
 import java.util.UUID;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 @Entity
 public class TestRun {
 
 	@Id
-	@GeneratedValue
+//	@GeneratedValue
 	@org.hibernate.annotations.Type(type="uuid-char")
 	private UUID id;
 	
 	@ManyToOne
+	@NotNull
 	private TestCase testCase;
+	@NotNull
 	private Date timeStamp;
+	@NotNull
 	private boolean result;
 	private String reason;
 	
 	@ManyToOne
+	@NotNull
 	private TestSession testSession;
 
 	public TestRun() {

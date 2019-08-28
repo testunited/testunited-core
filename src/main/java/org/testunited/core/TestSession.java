@@ -15,7 +15,7 @@ import javax.validation.constraints.NotNull;
 @Table(uniqueConstraints={@UniqueConstraint(columnNames = {"name", "application_id", "environment"})})
 public class TestSession {
 	@Id
-	@GeneratedValue
+//	@GeneratedValue
 	@org.hibernate.annotations.Type(type="uuid-char")
 	private UUID id;
 	
@@ -26,6 +26,13 @@ public class TestSession {
 	@NotNull
 	private String environment;
 	
+	public String getEnvironment() {
+		return environment;
+	}
+
+	public void setEnvironment(String environment) {
+		this.environment = environment;
+	}
 	@NotNull
 	private String name;
 	

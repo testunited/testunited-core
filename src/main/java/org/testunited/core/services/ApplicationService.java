@@ -15,6 +15,8 @@ public class ApplicationService {
 	private ApplicationRepository appRepo;
 	
 	public void save(Application app) {
+		if(app.getId() == null)
+			app.setId(UUID.randomUUID());
 		this.appRepo.save(app);
 	}
 	

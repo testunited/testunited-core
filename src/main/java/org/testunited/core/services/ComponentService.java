@@ -15,6 +15,8 @@ public class ComponentService {
 	private ComponentRepository componentRepo;
 	
 	public void save(Component comp) {
+		if(comp.getId() == null)
+			comp.setId(UUID.randomUUID());		
 		this.componentRepo.save(comp);
 	}
 	

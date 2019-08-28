@@ -15,8 +15,15 @@ public class TestCaseService {
 	@Autowired
 	private TestCaseRepository testCaseRepo;
 	
-	public void save(TestCase testGroup) {
-		this.testCaseRepo.save(testGroup);
+	public void save(TestCase testCase) {
+		if(testCase.getId() == null)
+			testCase.setId(UUID.randomUUID());		
+
+		this.testCaseRepo.save(testCase);
+	}
+	
+	public List<TestCase> getByApplicationId(UUID id) {
+		return testCaseRepo.findByApplicationId(id);
 	}
 	
 	public List<TestCase> getByTestTargetId(UUID id) {

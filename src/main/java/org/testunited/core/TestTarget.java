@@ -6,10 +6,11 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 @Entity
+@Table(uniqueConstraints={@UniqueConstraint(columnNames = {"name", "component_id"})})
 public class TestTarget {
 
 	@Id
-	@GeneratedValue
+//	@GeneratedValue
 	@org.hibernate.annotations.Type(type = "uuid-char")
 	private UUID id;
 
@@ -18,19 +19,19 @@ public class TestTarget {
 	private Component component;
 
 	@NotNull
-	private String function;
+	private String name;
 
-	public TestTarget(UUID id, Component component, String function) {
+	public TestTarget(UUID id, Component component, String name) {
 		super();
 		this.id = id;
 		this.component = component;
-		this.function = function;
+		this.name = name;
 	}
 
-	public TestTarget(Component component, String function) {
+	public TestTarget(Component component, String name) {
 		super();
 		this.component = component;
-		this.function = function;
+		this.name = name;
 	}
 
 	public TestTarget(UUID id) {
@@ -52,12 +53,12 @@ public class TestTarget {
 		this.component = component;
 	}
 
-	public String getFunction() {
-		return function;
+	public String getName() {
+		return name;
 	}
 
-	public void setFunction(String function) {
-		this.function = function;
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	public void setId(UUID id) {

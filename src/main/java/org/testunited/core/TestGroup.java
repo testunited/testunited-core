@@ -3,17 +3,20 @@ package org.testunited.core;
 import java.util.UUID;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 @Entity
 public class TestGroup {
 	@Id
-	@GeneratedValue
+//	@GeneratedValue
 	@org.hibernate.annotations.Type(type="uuid-char")
 	private UUID id;
 
 	@ManyToOne
+	@NotNull
 	private Application application;
 
+	@NotNull
 	private String name;
 
 	public TestGroup(UUID id, String name, UUID applicationId) {

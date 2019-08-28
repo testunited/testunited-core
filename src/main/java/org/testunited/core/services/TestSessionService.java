@@ -7,6 +7,7 @@ import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.testunited.core.TestCase;
+import org.testunited.core.TestGroup;
 import org.testunited.core.TestSession;
 import org.testunited.core.data.TestCaseRepository;
 import org.testunited.core.data.TestSessionRepository;
@@ -20,7 +21,13 @@ public class TestSessionService {
 	TestRunService testRunService;
 	
 	public void save(TestSession testSession) {
+		if(testSession.getId() == null)
+			testSession.setId(UUID.randomUUID());		
 		this.testSessionRepo.save(testSession);
+	}
+	
+	public List<TestSession> getByApplicationId(UUID id) {
+		return testSessionRepo.findByApplicationId(id);
 	}
 	
 	public TestSession getById(UUID id) {

@@ -6,6 +6,7 @@ bin/
 *.dat
 .attach_*
 *.log
+testunited/
 
 ### STS ###
 .apt_generated

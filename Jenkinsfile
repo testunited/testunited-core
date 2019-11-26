@@ -1,7 +1,7 @@
 pipeline {
     agent any 
     environment {
-    	APP_NAME = "core"
+    	APP_NAME = "web-api"
         GIT_SSH_KEY='chamith_github'
         DOCKER_IMAGE_LOCAL="testunited/testunited-${APP_NAME}"
         KUBE_NS="testunited-int"
@@ -13,7 +13,7 @@ pipeline {
    			steps {
    				script {
 		        	version = sh(returnStdout: true, script: "gradle -q bootJarVersion").trim()
-		        	BUILD_TAG = "v${version}-b${BUILD_NUMBER}"
+		        	BUILD_TAG = "${version}-b${BUILD_NUMBER}"
         			TESTUNITED_SESSION_NAME = "${env.JOB_BASE_NAME}-ci-build-${BUILD_TAG}"
         			DOCKER_IMAGE_REMOTE="${DOCKER_IMAGE_LOCAL}:${BUILD_TAG}"
 		        }

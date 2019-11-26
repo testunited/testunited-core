@@ -3,4 +3,4 @@ pluginManagement {
 		gradlePluginPortal()
 	}
 }
-rootProject.name = 'testunited-core'
+rootProject.name = 'testunited-web-api'

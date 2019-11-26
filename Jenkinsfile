@@ -1,9 +1,10 @@
 pipeline {
     agent any 
     environment {
-    	APP_NAME = "web-api"
+    	APP_NAME = "webapi"
+        IMAGE_NAME = "web-api"
         GIT_SSH_KEY='chamith_github'
-        DOCKER_IMAGE_LOCAL="testunited/testunited-${APP_NAME}"
+        DOCKER_IMAGE_LOCAL="testunited/testunited-${IMAGE_NAME}"
         KUBE_NS="testunited-int"
         REGISTRY_CREDENTIALS="chamith_dockerhub"
     }

@@ -44,7 +44,7 @@ publishing {
     }
 }
 dependencies {
-    compile 'mysql:mysql-connector-java'
+    implementation 'mysql:mysql-connector-java'
 	implementation 'org.springframework.boot:spring-boot-starter-actuator'
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
@@ -72,10 +72,10 @@ jacocoTestReport {
     }
 }
 docker {
-    name "testunited/${bootJar.baseName}:latest"
+    name "testunited/${bootJar.archiveBaseName}:latest"
     files jar.archivePath
     copySpec.from("build/libs").into(".")
-    buildArgs(['JAR_FILE': "${bootJar.baseName}-${bootJar.version}.jar"])
+    buildArgs(['JAR_FILE': "${bootJar.archiveBaseName}-${bootJar.archiveVersion}.jar"])
 }
 
 test {

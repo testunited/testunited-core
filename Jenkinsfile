@@ -13,7 +13,7 @@ pipeline {
    		stage('Define') {
    			steps {
    				script {
-		        	version = sh(returnStdout: true, script: "gradle -q bootJarVersion").trim()
+		        	version = sh(returnStdout: true, script: "gradle -q getVersion").trim()
 		        	BUILD_TAG = "${version}-b${BUILD_NUMBER}"
         			TESTUNITED_SESSION_NAME = "${env.JOB_BASE_NAME}-ci-build-${BUILD_TAG}"
         			DOCKER_IMAGE_REMOTE="${DOCKER_IMAGE_LOCAL}:${BUILD_TAG}"

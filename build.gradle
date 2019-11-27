@@ -88,8 +88,8 @@ task runJar(group: "Run", description: "Runs the Jar built by the 'build' task",
     args jar.archivePath
 }
 
-task bootJarVersion{
+task getVersion{
     doLast {
-    	println bootJar.version
+    	println version
   }
 }

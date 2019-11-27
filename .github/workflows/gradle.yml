@@ -14,4 +14,4 @@ jobs:
       with:
         java-version: 12
     - name: Build with Gradle
-      run: ./gradlew build
+      run: ./gradlew build -PdepsKey=DEPSGFFVE3QQN6XQSEI5 -PdepsSecret=h3tMIpHla8D7rKvN0cunDpFhM0n6OPt5TZCqntER

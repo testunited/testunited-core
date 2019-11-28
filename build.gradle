@@ -26,23 +26,6 @@ repositories {
 	mavenCentral()
 }
 
-publishing {
-	publications {
-    	mavenJava(MavenPublication) {
-        	from components.java
-    	}
-	}
-	repositories {
-	    maven {
-	        name "snapshots"
-	        url "https://repo.deps.co/chamithsri/snapshots"
-	        credentials {
-	            username "$depsKey"
-	            password "$depsSecret"
-	        }
-	    }
-    }
-}
 dependencies {
     implementation 'mysql:mysql-connector-java'
 	implementation 'org.springframework.boot:spring-boot-starter-actuator'

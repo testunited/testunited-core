@@ -1,13 +1,23 @@
 package org.testunited.webapi.web;
 
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-import static org.springframework.test.web.servlet.setup.MockMvcBuilders.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.setup.MockMvcBuilders.standaloneSetup;
 
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.UUID;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.hamcrest.Matchers;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.TestInstance.Lifecycle;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -18,13 +28,6 @@ import org.testunited.webapi.TestGroup;
 import org.testunited.webapi.TestRun;
 import org.testunited.webapi.TestSession;
 import org.testunited.webapi.services.TestRunService;
-import org.testunited.webapi.web.TestRunController;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.jupiter.api.*;
-import org.junit.jupiter.api.TestInstance.Lifecycle;
-import java.util.Date;
-import java.util.UUID;
 
 @SpringBootTest
 @TestInstance(Lifecycle.PER_CLASS)

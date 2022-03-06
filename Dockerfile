@@ -1,4 +1,4 @@
-FROM openjdk:12-alpine
+FROM openjdk:17-alpine
 WORKDIR /app
 ARG JAR_FILE
 COPY ./${JAR_FILE} /app/app.jar

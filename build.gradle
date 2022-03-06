@@ -3,25 +3,26 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath("org.springframework.boot:spring-boot-gradle-plugin:2.6.4")
-        
+        classpath "org.springframework.boot:spring-boot-gradle-plugin:2.6.4"
+        classpath "com.palantir.gradle.docker:gradle-docker:0.32.0"
     }
 }
 
 plugins {
 	id 'org.springframework.boot' version '2.6.4'
 	id 'java'
-	id 'com.palantir.docker' version '0.22.1'
+	id 'com.palantir.docker' version '0.32.0'
 	id 'jacoco'
     id 'maven-publish'
-	id 'com.adarshr.test-logger' version '1.7.0'	
+	id 'com.adarshr.test-logger' version '3.2.0'	
 	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
 }
 
 apply plugin: 'io.spring.dependency-management'
+apply plugin: "com.palantir.docker"
 
 group = 'org.testunited'
-version = '0.1.1'
+version = '0.1.2'
 
 repositories {
 	mavenCentral()
@@ -37,15 +38,15 @@ dependencies {
     	exclude group: 'junit', module: 'junit' //by both name and group
     }
 	runtimeOnly 'org.apache.derby:derby'
-	testRuntimeOnly 'org.junit.platform:junit-platform-engine:1.5.2'
-	testImplementation 'org.junit.jupiter:junit-jupiter-api:5.5.2'
-    testImplementation 'org.junit.jupiter:junit-jupiter-engine:5.5.2'
-    testImplementation 'org.junit.platform:junit-platform-launcher:1.5.2'
-    testImplementation 'org.junit.platform:junit-platform-commons:1.5.2'
+	testRuntimeOnly 'org.junit.platform:junit-platform-engine:1.8.2'
+	testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.2'
+    testImplementation 'org.junit.jupiter:junit-jupiter-engine:5.8.2'
+    testImplementation 'org.junit.platform:junit-platform-launcher:1.8.2'
+    testImplementation 'org.junit.platform:junit-platform-commons:1.8.2'
 }
 
 jacoco {
-    toolVersion = "0.8.3"
+    toolVersion = "0.8.7"
     reportsDir = file("$buildDir/jacoco")
 }
 
@@ -57,12 +58,18 @@ jacocoTestReport {
     }
 }
 docker {
-    name "testunited/${bootJar.archiveBaseName}:latest"
+    name "testunited/${bootJar.archiveBaseName.get()}:latest"
     files jar.archivePath
     copySpec.from("build/libs").into(".")
-    buildArgs(['JAR_FILE': "${bootJar.archiveBaseName}-${bootJar.archiveVersion}.jar"])
+    buildArgs(['JAR_FILE': "${bootJar.archiveBaseName.get()}-${bootJar.archiveVersion.get()}.jar"])
 }
+dockerPrepare{
+    duplicatesStrategy = 'include'
 
+}
+task processPackageResources(type: Copy) {
+    duplicatesStrategy = 'include'
+}
 test {
     useJUnitPlatform()
 }
@@ -73,6 +80,11 @@ task runJar(group: "Run", description: "Runs the Jar built by the 'build' task",
     args jar.archivePath
 }
 
+task getBootJarName{
+    doLast{
+        println "testunited/${bootJar.archiveBaseName.get()}:${version}"
+    }
+}
 task getVersion{
     doLast {
     	println version

@@ -16,5 +16,5 @@ jobs:
     - name: Build with Gradle
       run: ./gradlew build -x test -PdepsKey=DEPSGFFVE3QQN6XQSEI5 -PdepsSecret=h3tMIpHla8D7rKvN0cunDpFhM0n6OPt5TZCqntER
     - name: build docker image
-      uses: ./gradlew docker
+      run: ./gradlew docker
     

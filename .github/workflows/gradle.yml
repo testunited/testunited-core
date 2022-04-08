@@ -9,9 +9,12 @@ jobs:
 
     steps:
     - uses: actions/checkout@v1
-    - name: Set up JDK 12
+    - name: Set up JDK 17
       uses: actions/setup-java@v1
       with:
-        java-version: 12
+        java-version: 17
     - name: Build with Gradle
-      run: ./gradlew build -PdepsKey=DEPSGFFVE3QQN6XQSEI5 -PdepsSecret=h3tMIpHla8D7rKvN0cunDpFhM0n6OPt5TZCqntER
+      run: ./gradlew build -x test -PdepsKey=DEPSGFFVE3QQN6XQSEI5 -PdepsSecret=h3tMIpHla8D7rKvN0cunDpFhM0n6OPt5TZCqntER
+    - name: build docker image
+      uses: ./gradlew docker
+    

@@ -15,6 +15,11 @@ jobs:
         java-version: 17
     - name: Build with Gradle
       run: ./gradlew build -x test -PdepsKey=DEPSGFFVE3QQN6XQSEI5 -PdepsSecret=h3tMIpHla8D7rKvN0cunDpFhM0n6OPt5TZCqntER
+    - name: Test
+      run: ./gradlew test
+    - name: Make the boot Jar
+      run: ./gradlew bootJar
     - name: build docker image
       run: ./gradlew docker
-    
+    - name: push docker image
+      run: ./gradlew dockerPush
